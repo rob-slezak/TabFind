@@ -1,0 +1,131 @@
+html, body {
+	width: 400px;
+	font-size: 16px;
+}
+
+.hidden {
+	display: none;
+}
+
+/* Header Section */
+.tabs-header {
+	padding: 10px;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 1px solid darkblue;
+}
+
+.tabs-header div {
+	padding: 5px 0;
+	display: block;
+	width: 100%;
+	text-align: center;
+	border: 1px solid darkblue;
+}
+
+#tabs-all, #tabs-duplicate {
+	border-right: none;
+}
+
+#tab-count {
+	border: none;
+}
+
+#tabs-all:hover, #tabs-duplicate:hover, #tabs-search:hover {
+	background-color: #ebf6f9;
+}
+
+#tabs-all.active, #tabs-duplicate.active, #tabs-search.active {
+	background-color: inherit;
+	font-weight: bold;
+}
+
+/* Tab List Section */
+#tabs-list {
+	width: 100%;
+	height: 460px;
+	overflow-y: auto;
+	padding: 0;
+	margin: 10px 0;
+}
+
+#tabs-list.large {
+	height: 500px;
+}
+
+#tabs-list li {
+	position: relative;
+	display: block;
+	padding: 5px;
+	padding-left: 10px;
+	white-space: nowrap; 
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#tabs-list li:hover {
+	background-color: #ebf6f9;
+}
+
+#tabs-list li.active {
+	background-color: inherit;
+	font-weight: bold;
+}
+
+#tabs-list li img {
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+}
+
+#tabs-list li span {
+	max-width: 200px;
+}
+
+/* Delete Button */
+.delete-btn {
+	display: none;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 6px;
+	right: 0;
+	background-color: inherit;
+	cursor: pointer;
+}
+
+#tabs-list li:hover .delete-btn {
+	display: block;
+}
+
+.delete-btn::before, .delete-btn::after {
+    display: block;
+    width: 16px;
+    height: 3px;
+	position: absolute;
+    top: 9px;
+    left: 0px;
+    background-color: darkblue;
+    content: '';
+}
+
+.delete-btn::after{
+    transform: rotate(45deg);
+}
+
+.delete-btn::before{
+    transform: rotate(-45deg);
+}
+
+/* Search Input Section */
+#search-input {
+	box-sizing: border-box;
+	width: calc(100% - 20px);
+	margin: 10px 10px 0 10px;
+	padding: 5px 10px;
+	border: 1px solid darkblue;
+	font-size: 16px;
+}
+#search-input:focus {
+	outline: none;	
+}

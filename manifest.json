@@ -1,0 +1,21 @@
+{
+  "background": {
+      "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "TabFind",
+    "default_popup": "popup/tabfind.html"
+  },
+  "description": "",
+  "homepage_url": "https://github.com/rob-slezak/TabFind",
+  "icons": {
+    "48": "icons/tabfind-48.png"
+  },
+  "manifest_version": 2,
+  "name": "TabFind",
+  "permissions": [
+    "tabs"
+  ],
+  "version": "1.0"
+}
