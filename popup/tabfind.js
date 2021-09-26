@@ -127,6 +127,9 @@ function buildListItemFromTab(tab) {
 	tabContent.setAttribute('href', tab.id);
 	tabContent.classList.add('switch-tabs');
 	tabContent.textContent = tab.title || tab.url;
+	if (tab.discarded) {
+		tabContent.classList.add('discarded');
+	}
 	
 	let tabDel = document.createElement('div');
 	tabDel.setAttribute('href', tab.id);

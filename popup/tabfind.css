@@ -88,6 +88,10 @@ html, body {
 	max-width: 200px;
 }
 
+#tabs-list li span.discarded {
+	color: #999;
+}
+
 /* Delete Button */
 .delete-btn {
 	display: none;
