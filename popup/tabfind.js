@@ -70,17 +70,14 @@ function makeTabActive(tab) {
 		case TABS_ALL:
 			tabAll.classList.add('active');
 			searchInput.classList.add('hidden');
-			tabList.classList.add('large');
 			break;
 		case TABS_DUPLICATE:
 			tabDuplicate.classList.add('active');
 			searchInput.classList.add('hidden');
-			tabList.classList.add('large');
 			break;
 		case TABS_SEARCH:
 			tabSearch.classList.add('active');
 			searchInput.classList.remove('hidden');
-			tabList.classList.remove('large');
 			break;
 	}
 }
@@ -105,6 +102,42 @@ function updateTabCount() {
   });
 }
 
+/**
+ * Builds the li for a given tab
+ */
+function buildListItemFromTab(tab) {
+	let tabLink = document.createElement('li');
+	tabLink.setAttribute('href', tab.id);
+	tabLink.classList.add('switch-tabs');
+	if (tab.active) {
+		tabLink.classList.add('active');
+	}
+	
+	let tabImg = document.createElement('img');
+	tabImg.setAttribute('href', tab.id);
+	tabImg.classList.add('switch-tabs');
+	if (tab.favIconUrl) {
+		tabImg.src = tab.favIconUrl;
+	}
+	else {
+		tabImg.classList.add('invisible');
+	}
+
+	let tabContent = document.createElement('span');
+	tabContent.setAttribute('href', tab.id);
+	tabContent.classList.add('switch-tabs');
+	tabContent.textContent = tab.title || tab.url;
+	
+	let tabDel = document.createElement('div');
+	tabDel.setAttribute('href', tab.id);
+	tabDel.classList.add('delete-btn');
+	
+	tabLink.append(tabImg);
+	tabLink.append(tabContent);
+	tabLink.append(tabDel);
+	
+	return tabLink;
+}
 
 /**
  * lists all the tabs in the active window
@@ -115,31 +148,7 @@ function listAllTabs() {
 		tabsList.textContent = '';
 		
 		for (let tab of tabs) {
-			let tabLink = document.createElement('li');
-			tabLink.setAttribute('href', tab.id);
-			tabLink.classList.add('switch-tabs');
-			if (tab.active) {
-				tabLink.classList.add('active');
-			}
-			
-			let tabImg = document.createElement('img');
-			tabImg.setAttribute('href', tab.id);
-			tabImg.classList.add('switch-tabs');
-			tabImg.src = tab.favIconUrl;
-			
-			let tabContent = document.createElement('span');
-			tabContent.setAttribute('href', tab.id);
-			tabContent.classList.add('switch-tabs');
-			tabContent.textContent = tab.title || tab.url;
-			
-			let tabDel = document.createElement('div');
-			tabDel.setAttribute('href', tab.id);
-			tabDel.classList.add('delete-btn');
-			
-			tabLink.append(tabImg);
-			tabLink.append(tabContent);
-			tabLink.append(tabDel);
-			tabsList.appendChild(tabLink);
+			tabsList.appendChild(buildListItemFromTab(tab));
 		}
 	});
 }
@@ -169,31 +178,7 @@ function listDuplicateTabs() {
 			
 			if (tabs.length > 1) {
 				for (let tab of tabs) {
-					let tabLink = document.createElement('li');
-					tabLink.setAttribute('href', tab.id);
-					tabLink.classList.add('switch-tabs');
-					if (tab.active) {
-						tabLink.classList.add('active');
-					}
-					
-					let tabImg = document.createElement('img');
-					tabImg.setAttribute('href', tab.id);
-					tabImg.classList.add('switch-tabs');
-					tabImg.src = tab.favIconUrl;
-					
-					let tabContent = document.createElement('span');
-					tabContent.setAttribute('href', tab.id);
-					tabContent.classList.add('switch-tabs');
-					tabContent.textContent = tab.title || tab.url;
-					
-					let tabDel = document.createElement('div');
-					tabDel.setAttribute('href', tab.id);
-					tabDel.classList.add('delete-btn');
-					
-					tabLink.append(tabImg);
-					tabLink.append(tabContent);
-					tabLink.append(tabDel);
-					tabsList.appendChild(tabLink);
+					tabsList.appendChild(buildListItemFromTab(tab));
 				}
 			}
 		}
@@ -210,35 +195,9 @@ function listSearchTabs() {
 		
 		for (let tab of tabs) {
 			if (search === '' || tab.title.toLowerCase().includes(search.toLowerCase())) {
-				let tabLink = document.createElement('li');
-				tabLink.setAttribute('href', tab.id);
-				tabLink.classList.add('switch-tabs');
-				if (tab.active) {
-					tabLink.classList.add('active');
-				}
-				
-				let tabImg = document.createElement('img');
-				tabImg.setAttribute('href', tab.id);
-				tabImg.classList.add('switch-tabs');
-				tabImg.src = tab.favIconUrl;
-				
-				let tabContent = document.createElement('span');
-				tabContent.setAttribute('href', tab.id);
-				tabContent.classList.add('switch-tabs');
-				tabContent.textContent = tab.title || tab.url;
-				
-				let tabDel = document.createElement('div');
-				tabDel.setAttribute('href', tab.id);
-				tabDel.classList.add('delete-btn');
-				
-				tabLink.append(tabImg);
-				tabLink.append(tabContent);
-				tabLink.append(tabDel);
-				tabsList.appendChild(tabLink);
+				tabsList.appendChild(buildListItemFromTab(tab));
 			}
 		}
-		
-		tabsList.appendChild(currentTabs);
 	});
 }
 

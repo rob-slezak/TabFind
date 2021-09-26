@@ -1,10 +1,15 @@
 html, body {
 	width: 400px;
-	font-size: 16px;
+	margin: 0;
+	font-size: 12px;
 }
 
 .hidden {
 	display: none;
+}
+
+.invisible {
+	visibility: hidden;
 }
 
 /* Header Section */
@@ -13,6 +18,7 @@ html, body {
 	display: flex;
 	flex-direction: row;
 	border-bottom: 1px solid darkblue;
+	font-size: 15px;
 }
 
 .tabs-header div {
@@ -41,16 +47,16 @@ html, body {
 }
 
 /* Tab List Section */
-#tabs-list {
-	width: 100%;
-	height: 460px;
-	overflow-y: auto;
-	padding: 0;
-	margin: 10px 0;
+#tabs-list-wrapper {
+	margin-top: 10px;
 }
 
-#tabs-list.large {
+#tabs-list {
+	width: 100%;
 	height: 500px;
+	overflow-y: auto;
+	padding: 0;
+	margin: 0;
 }
 
 #tabs-list li {
@@ -121,10 +127,10 @@ html, body {
 #search-input {
 	box-sizing: border-box;
 	width: calc(100% - 20px);
-	margin: 10px 10px 0 10px;
+	margin: 0 10px 10px 10px;
 	padding: 5px 10px;
 	border: 1px solid darkblue;
-	font-size: 16px;
+	font-size: 12px;
 }
 #search-input:focus {
 	outline: none;	
