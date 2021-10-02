@@ -70,14 +70,17 @@ function makeTabActive(tab) {
 		case TABS_ALL:
 			tabAll.classList.add('active');
 			searchInput.classList.add('hidden');
+			tabList.classList.add('larger');
 			break;
 		case TABS_DUPLICATE:
 			tabDuplicate.classList.add('active');
 			searchInput.classList.add('hidden');
+			tabList.classList.add('larger');
 			break;
 		case TABS_SEARCH:
 			tabSearch.classList.add('active');
 			searchInput.classList.remove('hidden');
+			tabList.classList.remove('larger');
 			break;
 	}
 }
