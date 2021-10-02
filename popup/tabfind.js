@@ -21,15 +21,15 @@ function getTabs() {
 /**
  * Switch to the given tab
  */
-function switchTab(tabId) {
-	return browser.tabs.update(tabId, { active: true });
+async function switchTab(tabId) {
+	browser.tabs.update(tabId, { active: true });
 }
 
 /**
  * Close the given tab
  */
-function closeTab(tabId) {
-	return browser.tabs.remove(tabId);
+async function closeTab(tabId) {
+	browser.tabs.remove(tabId);
 }
 
 /**
@@ -145,6 +145,15 @@ function buildListItemFromTab(tab) {
 	return tabLink;
 }
 
+
+/**
+ * Scroll to the active tab
+ */
+function ScrollToActiveTab(tabsList) {
+	let activeTab = tabsList.getElementsByClassName("active")[0];
+	activeTab.scrollIntoView();
+}
+
 /**
  * lists all the tabs in the active window
  */
@@ -156,6 +165,8 @@ function listAllTabs() {
 		for (let tab of tabs) {
 			tabsList.appendChild(buildListItemFromTab(tab));
 		}
+		
+		ScrollToActiveTab(tabsList);
 	});
 }
 
@@ -188,6 +199,8 @@ function listDuplicateTabs() {
 				}
 			}
 		}
+
+		ScrollToActiveTab(tabsList);
 	});
 }
 
@@ -204,6 +217,8 @@ function listSearchTabs() {
 				tabsList.appendChild(buildListItemFromTab(tab));
 			}
 		}
+
+		ScrollToActiveTab(tabsList);
 	});
 }
 
@@ -219,35 +234,29 @@ function init () {
 }
 document.addEventListener("DOMContentLoaded", init);
 
-document.addEventListener("click", (e) => {
+document.addEventListener("click", async (e) => {
 	if (e.target.id === "tabs-all" && currentState !== TABS_ALL) {
 		makeTabActive(TABS_ALL);
-		listAllTabs();
 	}
 	else if (e.target.id === "tabs-duplicate" && currentState !== TABS_DUPLICATE) {
 		makeTabActive(TABS_DUPLICATE);
-		listDuplicateTabs();
 	}
 	else if (e.target.id === "tabs-search" && currentState !== TABS_SEARCH) {
 		makeTabActive(TABS_SEARCH);
-		listSearchTabs();		
 	}
 	
 	else if (e.target.classList.contains('switch-tabs')) {
 		var tabId = +e.target.getAttribute('href');
 		
-		switchTab(tabId).then(() => {
-			reloadTabList();
-		});
+		await switchTab(tabId);
 	}
 	
 	else if (e.target.classList.contains('delete-btn')) {
 		var tabId = +e.target.getAttribute('href');
 		
-		closeTab(tabId).then(() => {
-			reloadTabList();
-		});
+		await closeTab(tabId);
 	}
+	reloadTabList();
 	
 	e.preventDefault();
 });
