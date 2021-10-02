@@ -231,6 +231,12 @@ function init () {
 		search = e.target.value;
 		listSearchTabs();
 	});
+	
+	// Retrieve text size from storage
+	browser.storage.local.get("textSize").then((result) => {
+		let textSize = result.textSize ?? 12;
+		document.getElementById('tabs-list').style.fontSize = textSize + "px";
+	});
 }
 document.addEventListener("DOMContentLoaded", init);
 

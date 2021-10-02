@@ -1,0 +1,10 @@
+.option-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	padding: 10px;
+}
+
+.label {
+	font-weight: bold;
+}
