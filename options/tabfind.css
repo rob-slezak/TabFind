@@ -1,10 +1,25 @@
-.option-wrapper {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+.option-section {
 	padding: 10px;
 }
 
+.option-wrapper {
+	display: inline-flex;
+	width: 50%;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
 .label {
+	display: inline-block;
 	font-weight: bold;
+	width: 150px;
+}
+
+#badgeColor {
+	width: 20%;
 }

@@ -12,11 +12,21 @@ function updateCount(tabId, isOnRemoved) {
 			}
 
 			browser.browserAction.setBadgeText({text: length.toString(), windowId: win.id });
-			browser.browserAction.setBadgeBackgroundColor({'color': 'blueviolet'});
+			
+			// Retrieve badge color from storage
+			browser.storage.local.get("badgeColor").then((result) => {
+				let badgeColor = result.badgeColor ?? '#8a2be2';
+				browser.browserAction.setBadgeBackgroundColor({'color': badgeColor});
+			});
 		}
 	});
 }
 
+browser.storage.onChanged.addListener((changes, area) => {
+	if (changes['badgeColor']) {
+		browser.browserAction.setBadgeBackgroundColor({'color': changes['badgeColor'].newValue});
+	}
+});
 
 browser.tabs.onRemoved.addListener(
 	(tabId) => { updateCount(tabId, true);

@@ -7,12 +7,20 @@
 	</head>
 
 	<body>
-		<div class="option-wrapper">
+		<div class="option-section">
 			<span class="label">Text Size :</span>
-			<label>Small <input type="radio" value="12" name= "textSize" /></label>
-			<label>Medium <input type="radio" value="16" name= "textSize" /></label>
-			<label>Large <input type="radio" value="20" name= "textSize" /></label>
+			<div class="option-wrapper">
+				<label>Small <input type="radio" value="12" name= "textSize" /></label>
+				<label>Medium <input type="radio" value="16" name= "textSize" /></label>
+				<label>Large <input type="radio" value="20" name= "textSize" /></label>
+			</div>
 		</div>
+
+		<div class="option-section">
+			<span class="label">Badge Color :</span>
+			<input type="color" id="badgeColor" name="badgeColor" />
+		</div>
+
 
 		<script src="tabfind.js"></script>
 	</body>
