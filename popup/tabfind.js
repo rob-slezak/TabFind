@@ -117,14 +117,12 @@ function buildListItemFromTab(tab) {
 	}
 	
 	let tabImg = document.createElement('img');
-	tabImg.setAttribute('href', tab.id);
-	tabImg.classList.add('switch-tabs');
-	if (tab.favIconUrl) {
-		tabImg.src = tab.favIconUrl;
-	}
-	else {
+	tabImg.onerror = () => {
 		tabImg.classList.add('invisible');
 	}
+	tabImg.setAttribute('href', tab.id);
+	tabImg.classList.add('switch-tabs');
+	tabImg.src = tab.favIconUrl;
 
 	let tabContent = document.createElement('span');
 	tabContent.setAttribute('href', tab.id);
