@@ -2,7 +2,7 @@ function retrieveOptions() {
 	// get textSize
 	browser.storage.local.get("textSize").then((result) => {
 		let options = document.getElementsByName("textSize");
-		let selectedOption = result.textSize ?? 12;
+		let selectedOption = result.textSize ?? "12";
 		for (let opt of options) {
 			if (opt.value === selectedOption) {
 				opt.checked = true;
@@ -53,7 +53,7 @@ function saveRadioButtons(optionName, defaultValue) {
 
 function saveTextSize(e) {
 	e.preventDefault();
-	saveRadioButtons("textSize", 12);
+	saveRadioButtons("textSize", "12");
 }
 
 function saveBadgeColor(e) {

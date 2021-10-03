@@ -268,7 +268,7 @@ function init () {
 	
 	// Retrieve text size from storage
 	browser.storage.local.get("textSize").then((result) => {
-		let textSize = result.textSize ?? 12;
+		let textSize = result.textSize ?? "12";
 		document.getElementById('tabs-list').style.fontSize = textSize + "px";
 	});
 	
