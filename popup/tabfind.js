@@ -147,7 +147,6 @@ function buildListItemFromTab(tab) {
 	return tabLink;
 }
 
-
 /**
  * Scroll to the active tab
  */
@@ -257,35 +256,30 @@ function listSearchTabs() {
 }
 
 function init () {
-	makeTabActive(TABS_ALL);
-	updateTabCount();
-	listAllTabs();
-	
 	document.getElementById('search-input').addEventListener("input", (e) => {
 		search = e.target.value;
 		listSearchTabs();
 	});
 
-	// Retrieve text size from storage
-	browser.storage.local.get("textSize").then((result) => {
-		let textSize = result.textSize ?? "small";
+	let promiseTextSize = browser.storage.local.get("textSize");
+	let promiseFindDups = browser.storage.local.get("findDups");
+	let promiseSearchBy = browser.storage.local.get("searchBy");
+	let promisePopupWidth = browser.storage.local.get("popupWidth");
+
+	Promise.all([promiseTextSize, promiseFindDups, promiseSearchBy, promisePopupWidth]).then((values) => {
+		let textSize = values[0].textSize ?? "small";
 		document.getElementById('tabs-list').classList.add(textSize);
-	});
-	
-	// Retrieve find dups from storage
-	browser.storage.local.get("findDups").then((result) => {
-		findDups = result.findDups ?? "both";
-	});
 
-	// Retrieve search by from storage
-	browser.storage.local.get("searchBy").then((result) => {
-		searchBy = result.searchBy ?? "both";
-	});
+		findDups = values[1].findDups ?? "both";
 
-	// Retrieve popup width by from storage
-	browser.storage.local.get("popupWidth").then((result) => {
-		let popupWidth = result.popupWidth ?? "normal";
+		searchBy = values[2].searchBy ?? "both";
+
+		let popupWidth = values[3].popupWidth ?? "normal";
 		document.body.classList.add(popupWidth);
+
+		makeTabActive(TABS_ALL);
+		updateTabCount();
+		listAllTabs();
 	});
 }
 document.addEventListener("DOMContentLoaded", init);
