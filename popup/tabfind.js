@@ -1,8 +1,12 @@
 const TABS_ALL = 0;
 const TABS_DUPLICATE = 1;
 const TABS_SEARCH = 2;
+
 var currentState;
 var search = '';
+
+var findDups;
+var searchBy;
 
 /**
  * retrieves all windows with tabs
@@ -171,17 +175,33 @@ function listAllTabs() {
 /**
  * lists the duplicate tabs in the active window
  */
+function checkDup(duplicates, tab) {
+	let searchVal;
+	switch(findDups) {
+		case "name":
+			searchVal = tab.title;
+			break;
+		case "url":
+			searchVal = tab.url;
+			break;
+		case "both":
+			searchVal = `${tab.title}|${tab.url}`;
+			break;
+	}
+	
+	if (searchVal in duplicates) {
+		duplicates[searchVal] = duplicates[searchVal].concat(tab);
+	}
+	else {
+		duplicates[searchVal] = [tab];
+	}
+}
 function listDuplicateTabs() {
 	getTabs().then((tabs) => {
 		let duplicates = {};
 		
 		for (let tab of tabs) {
-			if (tab.url in duplicates) {
-				duplicates[tab.url] = duplicates[tab.url].concat(tab);
-			}
-			else {
-				duplicates[tab.url] = [tab];
-			}
+			checkDup(duplicates, tab);
 		}
 		
 		let tabsList = document.getElementById('tabs-list');
@@ -205,17 +225,33 @@ function listDuplicateTabs() {
 /**
  * lists the tabs in the active window with a search box
  */
+ function checkSearch(tab) {
+	let searchVal;
+	switch(searchBy) {
+		case "name":
+			searchVal = tab.title;
+			break;
+		case "url":
+			searchVal = tab.url;
+			break;
+		case "both":
+			searchVal = `${tab.title}|${tab.url}`;
+			break;
+	}
+	
+	return search === '' || searchVal.toLowerCase().includes(search.toLowerCase());
+}
 function listSearchTabs() {
 	getTabs().then((tabs) => {
 		let tabsList = document.getElementById('tabs-list');
 		tabsList.textContent = '';
 		
 		for (let tab of tabs) {
-			if (search === '' || tab.title.toLowerCase().includes(search.toLowerCase())) {
+			if (checkSearch(tab)) {
 				tabsList.appendChild(buildListItemFromTab(tab));
 			}
 		}
-
+		
 		ScrollToActiveTab(tabsList);
 	});
 }
@@ -235,6 +271,17 @@ function init () {
 		let textSize = result.textSize ?? 12;
 		document.getElementById('tabs-list').style.fontSize = textSize + "px";
 	});
+	
+	// Retrieve find dups from storage
+	browser.storage.local.get("findDups").then((result) => {
+		findDups = result.findDups ?? "both";
+	});
+
+	// Retrieve search by from storage
+	browser.storage.local.get("searchBy").then((result) => {
+		searchBy = result.searchBy ?? "both";
+	});
+
 }
 document.addEventListener("DOMContentLoaded", init);
 

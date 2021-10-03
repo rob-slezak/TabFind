@@ -15,20 +15,45 @@ function retrieveOptions() {
 		let opt = document.getElementById("badgeColor");
 		opt.value = result.badgeColor ?? '#8a2be2';
 	});
+	
+	// get findDups
+	browser.storage.local.get("findDups").then((result) => {
+		let options = document.getElementsByName("findDups");
+		let selectedOption = result.findDups ?? 'both';
+		for (let opt of options) {
+			if (opt.value === selectedOption) {
+				opt.checked = true;
+			}
+		}
+	});
+
+	// get searchBy
+	browser.storage.local.get("searchBy").then((result) => {
+		let options = document.getElementsByName("searchBy");
+		let selectedOption = result.searchBy ?? 'both';
+		for (let opt of options) {
+			if (opt.value === selectedOption) {
+				opt.checked = true;
+			}
+		}
+	});
 }
 
-function saveTextSize(e) {
-	e.preventDefault();
-
-	let options = document.getElementsByName("textSize");
-	let selectedOption = 12;
+function saveRadioButtons(optionName, defaultValue) {
+	let options = document.getElementsByName(optionName);
+	let selectedOption = defaultValue;
 	for (let opt of options) {
 		if (opt.checked) {
 			selectedOption = opt.value;
 		}
 	}
 	
-	browser.storage.local.set({ textSize: selectedOption });
+	browser.storage.local.set({ [optionName]: selectedOption });
+}
+
+function saveTextSize(e) {
+	e.preventDefault();
+	saveRadioButtons("textSize", 12);
 }
 
 function saveBadgeColor(e) {
@@ -38,15 +63,41 @@ function saveBadgeColor(e) {
 	browser.storage.local.set({ badgeColor: selectedOption });
 }
 
-function init() {
-	document.addEventListener("DOMContentLoaded", retrieveOptions);
+function saveFindDups(e) {
+	e.preventDefault();
+	saveRadioButtons("findDups", "name");
+}
 
-	let options = document.getElementsByName("textSize");
+function saveSearchBy(e) {
+	e.preventDefault();
+	saveRadioButtons("searchBy", "name");
+}
+
+function init() {
+	let options;
+	
+	document.addEventListener("DOMContentLoaded", retrieveOptions);
+	
+	// event listeners for textSize
+	options = document.getElementsByName("textSize");
 	for (let opt of options) {
 		opt.addEventListener("change", saveTextSize);
 	}
 
+	// event listeners for badgeColor
 	document.getElementById("badgeColor").addEventListener("input", saveBadgeColor);
+
+	// event listeners for findDups
+	options = document.getElementsByName("findDups");
+	for (let opt of options) {
+		opt.addEventListener("change", saveFindDups);
+	}
+
+	// event listeners for searchBy
+	options = document.getElementsByName("searchBy");
+	for (let opt of options) {
+		opt.addEventListener("change", saveSearchBy);
+	}
 }
 
 init();
