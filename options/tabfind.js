@@ -2,7 +2,7 @@ function retrieveOptions() {
 	// get textSize
 	browser.storage.local.get("textSize").then((result) => {
 		let options = document.getElementsByName("textSize");
-		let selectedOption = result.textSize ?? "12";
+		let selectedOption = result.textSize ?? "small";
 		for (let opt of options) {
 			if (opt.value === selectedOption) {
 				opt.checked = true;
@@ -47,13 +47,12 @@ function saveRadioButtons(optionName, defaultValue) {
 			selectedOption = opt.value;
 		}
 	}
-	
 	browser.storage.local.set({ [optionName]: selectedOption });
 }
 
 function saveTextSize(e) {
 	e.preventDefault();
-	saveRadioButtons("textSize", "12");
+	saveRadioButtons("textSize", "small");
 }
 
 function saveBadgeColor(e) {
@@ -65,12 +64,12 @@ function saveBadgeColor(e) {
 
 function saveFindDups(e) {
 	e.preventDefault();
-	saveRadioButtons("findDups", "name");
+	saveRadioButtons("findDups", "both");
 }
 
 function saveSearchBy(e) {
 	e.preventDefault();
-	saveRadioButtons("searchBy", "name");
+	saveRadioButtons("searchBy", "both");
 }
 
 function init() {

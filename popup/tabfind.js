@@ -74,17 +74,17 @@ function makeTabActive(tab) {
 		case TABS_ALL:
 			tabAll.classList.add('active');
 			searchInput.classList.add('hidden');
-			tabList.classList.add('larger');
+			tabList.classList.add('no-search');
 			break;
 		case TABS_DUPLICATE:
 			tabDuplicate.classList.add('active');
 			searchInput.classList.add('hidden');
-			tabList.classList.add('larger');
+			tabList.classList.add('no-search');
 			break;
 		case TABS_SEARCH:
 			tabSearch.classList.add('active');
 			searchInput.classList.remove('hidden');
-			tabList.classList.remove('larger');
+			tabList.classList.remove('no-search');
 			break;
 	}
 }
@@ -265,11 +265,11 @@ function init () {
 		search = e.target.value;
 		listSearchTabs();
 	});
-	
+
 	// Retrieve text size from storage
 	browser.storage.local.get("textSize").then((result) => {
-		let textSize = result.textSize ?? "12";
-		document.getElementById('tabs-list').style.fontSize = textSize + "px";
+		let textSize = result.textSize ?? "small";
+		document.getElementById('tabs-list').classList.add(textSize);
 	});
 	
 	// Retrieve find dups from storage

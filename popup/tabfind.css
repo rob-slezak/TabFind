@@ -47,20 +47,31 @@ html, body {
 
 /* Tab List Section */
 #tabs-list-wrapper {
-	margin-top: 10px;
 	height: 530px;
 }
 
 #tabs-list {
 	width: 100%;
-	height: 493px;
+	height: 483px;
 	overflow-y: auto;
 	padding: 0;
 	margin: 0;
 }
 
-#tabs-list.larger {
+#tabs-list.no-search {
 	height: 530px;
+}
+
+#tabs-list.small {
+	font-size: 12px;
+}
+
+#tabs-list.medium {
+	font-size: 16px;
+}
+
+#tabs-list.large {
+	font-size: 20px;
 }
 
 #tabs-list li {
@@ -82,14 +93,43 @@ html, body {
 	font-weight: bold;
 }
 
+/* LI Image */
 #tabs-list li img {
-	width: 16px;
-	height: 16px;
 	margin-right: 5px;
 }
 
+#tabs-list.small li img {
+	width: 22px;
+	height: 22px;
+}
+
+#tabs-list.medium li img {
+	width: 26px;
+	height: 26px;
+}
+
+#tabs-list.large li img {
+	width: 30px;
+	height: 30px;
+}
+
+/* LI Context */
 #tabs-list li span {
-	max-width: 200px;
+	display: inline-block;
+	vertical-align: text-bottom;
+	max-width: 300px;
+}
+
+#tabs-list.small li span {
+	height: 22px;
+}
+
+#tabs-list.medium li span {
+	height: 26px;
+}
+
+#tabs-list.large li span {
+	height: 30px;
 }
 
 #tabs-list li span.discarded {
@@ -99,8 +139,8 @@ html, body {
 /* Delete Button */
 .delete-btn {
 	display: none;
-	width: 20px;
-	height: 20px;
+	width: 22px;
+	height: 22px;
 	position: absolute;
 	top: 6px;
 	right: 0;
@@ -112,10 +152,22 @@ html, body {
 	display: block;
 }
 
+#tabs-list.small li .delete-btn {
+	margin: 0;
+}
+
+#tabs-list.medium li .delete-btn {
+	margin: 2px 0;
+}
+
+#tabs-list.large li .delete-btn {
+	margin: 4px 0;
+}
+
 .delete-btn::before, .delete-btn::after {
     display: block;
-    width: 16px;
-    height: 3px;
+	width: 22px;
+    height: 4px;
 	position: absolute;
     top: 9px;
     left: 0px;
@@ -135,7 +187,7 @@ html, body {
 #search-input {
 	box-sizing: border-box;
 	width: calc(100% - 20px);
-	margin: 0 10px 10px 10px;
+	margin: 10px;
 	padding: 5px 10px;
 	border: 1px solid darkblue;
 }
