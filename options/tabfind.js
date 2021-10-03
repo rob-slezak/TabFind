@@ -37,6 +37,17 @@ function retrieveOptions() {
 			}
 		}
 	});
+
+	// get popupWidth
+	browser.storage.local.get("popupWidth").then((result) => {
+		let options = document.getElementsByName("popupWidth");
+		let selectedOption = result.popupWidth ?? "normal";
+		for (let opt of options) {
+			if (opt.value === selectedOption) {
+				opt.checked = true;
+			}
+		}
+	});
 }
 
 function saveRadioButtons(optionName, defaultValue) {
@@ -72,6 +83,11 @@ function saveSearchBy(e) {
 	saveRadioButtons("searchBy", "both");
 }
 
+function savePopupWidth(e) {
+	e.preventDefault();
+	saveRadioButtons("popupWidth", "normal");
+}
+
 function init() {
 	let options;
 	
@@ -96,6 +112,12 @@ function init() {
 	options = document.getElementsByName("searchBy");
 	for (let opt of options) {
 		opt.addEventListener("change", saveSearchBy);
+	}
+
+	// event listeners for popupWidth
+	options = document.getElementsByName("popupWidth");
+	for (let opt of options) {
+		opt.addEventListener("change", savePopupWidth);
 	}
 }
 

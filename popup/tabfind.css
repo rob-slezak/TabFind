@@ -1,12 +1,20 @@
 html, body {
-	width: 500px;
 	margin: 0;
+}
+
+body.narrow {
+	width: 400px;
+}
+body.normal {
+	width: 500px;
+}
+body.wide {
+	width: 600px;
 }
 
 .hidden {
 	display: none;
 }
-
 .invisible {
 	visibility: hidden;
 }
@@ -65,11 +73,9 @@ html, body {
 #tabs-list.small {
 	font-size: 12px;
 }
-
 #tabs-list.medium {
 	font-size: 16px;
 }
-
 #tabs-list.large {
 	font-size: 20px;
 }
@@ -79,9 +85,6 @@ html, body {
 	display: block;
 	padding: 5px;
 	padding-left: 10px;
-	white-space: nowrap; 
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 #tabs-list li:hover {
@@ -102,12 +105,10 @@ html, body {
 	width: 22px;
 	height: 22px;
 }
-
 #tabs-list.medium li img {
 	width: 26px;
 	height: 26px;
 }
-
 #tabs-list.large li img {
 	width: 30px;
 	height: 30px;
@@ -117,17 +118,27 @@ html, body {
 #tabs-list li span {
 	display: inline-block;
 	vertical-align: text-bottom;
-	max-width: 300px;
+	white-space: nowrap; 
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+body.narrow #tabs-list li span {
+	width: 325px;
+}
+body.normal #tabs-list li span {
+	width: 425px;
+}
+body.wide #tabs-list li span {
+	width: 525px;
 }
 
 #tabs-list.small li span {
 	height: 22px;
 }
-
 #tabs-list.medium li span {
 	height: 26px;
 }
-
 #tabs-list.large li span {
 	height: 30px;
 }
@@ -155,11 +166,9 @@ html, body {
 #tabs-list.small li .delete-btn {
 	margin: 0;
 }
-
 #tabs-list.medium li .delete-btn {
 	margin: 2px 0;
 }
-
 #tabs-list.large li .delete-btn {
 	margin: 4px 0;
 }
@@ -174,11 +183,9 @@ html, body {
     background-color: darkblue;
     content: '';
 }
-
 .delete-btn::after{
     transform: rotate(45deg);
 }
-
 .delete-btn::before{
     transform: rotate(-45deg);
 }

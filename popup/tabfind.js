@@ -282,6 +282,11 @@ function init () {
 		searchBy = result.searchBy ?? "both";
 	});
 
+	// Retrieve popup width by from storage
+	browser.storage.local.get("popupWidth").then((result) => {
+		let popupWidth = result.popupWidth ?? "normal";
+		document.body.classList.add(popupWidth);
+	});
 }
 document.addEventListener("DOMContentLoaded", init);
 
