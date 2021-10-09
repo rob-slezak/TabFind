@@ -45,6 +45,9 @@ body.extraWide {
 
 #tab-count {
 	border: none;
+	white-space: nowrap; 
+	overflow: hidden;
+	text-overflow: clip;
 }
 
 #tabs-all:hover, #tabs-duplicate:hover, #tabs-search:hover {
