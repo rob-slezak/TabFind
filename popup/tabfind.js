@@ -285,6 +285,8 @@ function init () {
 document.addEventListener("DOMContentLoaded", init);
 
 document.addEventListener("click", async (e) => {
+	e.preventDefault();
+
 	if (e.target.id === "tabs-all" && currentState !== TABS_ALL) {
 		makeTabActive(TABS_ALL);
 	}
@@ -307,6 +309,4 @@ document.addEventListener("click", async (e) => {
 		await closeTab(tabId);
 	}
 	reloadTabList();
-	
-	e.preventDefault();
 });
