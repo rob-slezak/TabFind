@@ -3,12 +3,15 @@ html, body {
 }
 
 body.narrow {
-	width: 400px;
+	width: 300px;
 }
 body.normal {
-	width: 500px;
+	width: 400px;
 }
 body.wide {
+	width: 500px;
+}
+body.extraWide {
 	width: 600px;
 }
 
@@ -125,12 +128,15 @@ body.wide {
 }
 
 body.narrow #tabs-list li span {
-	width: 325px;
+	width: 225px;
 }
 body.normal #tabs-list li span {
-	width: 425px;
+	width: 325px;
 }
 body.wide #tabs-list li span {
+	width: 425px;
+}
+body.extraWide #tabs-list li span {
 	width: 525px;
 }
 
