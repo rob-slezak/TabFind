@@ -26,14 +26,14 @@ function getTabs() {
  * Switch to the given tab
  */
 async function switchTab(tabId) {
-	browser.tabs.update(tabId, { active: true });
+	return browser.tabs.update(tabId, { active: true });
 }
 
 /**
  * Close the given tab
  */
 async function closeTab(tabId) {
-	browser.tabs.remove(tabId);
+	return browser.tabs.remove(tabId);
 }
 
 /**
