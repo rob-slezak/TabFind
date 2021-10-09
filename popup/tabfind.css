@@ -176,10 +176,10 @@ body.wide #tabs-list li span {
 
 .delete-btn::before, .delete-btn::after {
     display: block;
-	width: 22px;
-    height: 4px;
+	width: 18px;
+    height: 5px;
 	position: absolute;
-    top: 9px;
+    top: 8px;
     left: 0px;
     background-color: darkblue;
     content: '';
