@@ -12,7 +12,6 @@ html, body {
 	width: calc(100% - 220px);
 	flex-direction: row;
 	justify-content: space-between;
-	margin: 0 30px;
 }
 
 .label {
