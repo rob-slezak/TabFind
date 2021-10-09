@@ -39,16 +39,16 @@ async function closeTab(tabId) {
 /**
  * Reload tab list
  */
-function reloadTabList() {
+function reloadTabList(scrollToActiveTab = false) {
 	switch (currentState) {
 		case TABS_ALL:
-			listAllTabs();
+			listAllTabs(scrollToActiveTab);
 			break;
 		case TABS_DUPLICATE:
-			listDuplicateTabs();
+			listDuplicateTabs(scrollToActiveTab);
 			break;
 		case TABS_SEARCH:
-			listSearchTabs();
+			listSearchTabs(scrollToActiveTab);
 			break;
 	}
 }
@@ -158,7 +158,7 @@ function ScrollToActiveTab(tabsList) {
 /**
  * lists all the tabs in the active window
  */
-function listAllTabs() {
+function listAllTabs(scrollToActiveTab) {
 	getTabs().then((tabs) => {
 		let tabsList = document.getElementById('tabs-list');
 		tabsList.textContent = '';
@@ -167,7 +167,9 @@ function listAllTabs() {
 			tabsList.appendChild(buildListItemFromTab(tab));
 		}
 		
-		ScrollToActiveTab(tabsList);
+		if (scrollToActiveTab) {
+			ScrollToActiveTab(tabsList);
+		}
 	});
 }
 
@@ -195,7 +197,7 @@ function checkDup(duplicates, tab) {
 		duplicates[searchVal] = [tab];
 	}
 }
-function listDuplicateTabs() {
+function listDuplicateTabs(scrollToActiveTab) {
 	getTabs().then((tabs) => {
 		let duplicates = {};
 		
@@ -217,7 +219,9 @@ function listDuplicateTabs() {
 			}
 		}
 
-		ScrollToActiveTab(tabsList);
+		if (scrollToActiveTab) {
+			ScrollToActiveTab(tabsList);
+		}
 	});
 }
 
@@ -240,7 +244,7 @@ function listDuplicateTabs() {
 	
 	return search === '' || searchVal.toLowerCase().includes(search.toLowerCase());
 }
-function listSearchTabs() {
+function listSearchTabs(scrollToActiveTab) {
 	getTabs().then((tabs) => {
 		let tabsList = document.getElementById('tabs-list');
 		tabsList.textContent = '';
@@ -251,7 +255,9 @@ function listSearchTabs() {
 			}
 		}
 		
-		ScrollToActiveTab(tabsList);
+		if (scrollToActiveTab) {
+			ScrollToActiveTab(tabsList);
+		}
 	});
 }
 
@@ -279,7 +285,7 @@ function init () {
 
 		makeTabActive(TABS_ALL);
 		updateTabCount();
-		listAllTabs();
+		reloadTabList(true);
 	});
 }
 document.addEventListener("DOMContentLoaded", init);
@@ -289,24 +295,28 @@ document.addEventListener("click", async (e) => {
 
 	if (e.target.id === "tabs-all" && currentState !== TABS_ALL) {
 		makeTabActive(TABS_ALL);
+		reloadTabList(true);
 	}
 	else if (e.target.id === "tabs-duplicate" && currentState !== TABS_DUPLICATE) {
 		makeTabActive(TABS_DUPLICATE);
+		reloadTabList(true);
 	}
 	else if (e.target.id === "tabs-search" && currentState !== TABS_SEARCH) {
 		makeTabActive(TABS_SEARCH);
+		reloadTabList(true);
 	}
 	
 	else if (e.target.classList.contains('switch-tabs')) {
 		var tabId = +e.target.getAttribute('href');
 		
 		await switchTab(tabId);
+		reloadTabList();
 	}
 	
 	else if (e.target.classList.contains('delete-btn')) {
 		var tabId = +e.target.getAttribute('href');
 		
 		await closeTab(tabId);
+		reloadTabList();
 	}
-	reloadTabList();
 });
