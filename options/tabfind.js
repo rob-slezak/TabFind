@@ -15,6 +15,17 @@ function retrieveOptions() {
 		let opt = document.getElementById("badgeColor");
 		opt.value = result.badgeColor ?? '#8a2be2';
 	});
+
+	// get badgeCount
+	browser.storage.local.get("badgeCount").then((result) => {
+		let options = document.getElementsByName("badgeCount");
+		let selectedOption = result.badgeCount ?? "all";
+		for (let opt of options) {
+			if (opt.value === selectedOption) {
+				opt.checked = true;
+			}
+		}
+	});
 	
 	// get findDups
 	browser.storage.local.get("findDups").then((result) => {
@@ -73,6 +84,11 @@ function saveBadgeColor(e) {
 	browser.storage.local.set({ badgeColor: selectedOption });
 }
 
+function saveBadgeCount(e) {
+	e.preventDefault();
+	saveRadioButtons("badgeCount", "all");
+}
+
 function saveFindDups(e) {
 	e.preventDefault();
 	saveRadioButtons("findDups", "both");
@@ -101,6 +117,12 @@ function init() {
 
 	// event listeners for badgeColor
 	document.getElementById("badgeColor").addEventListener("input", saveBadgeColor);
+
+	// event listeners for badgeCount
+	options = document.getElementsByName("badgeCount");
+	for (let opt of options) {
+		opt.addEventListener("change", saveBadgeCount);
+	}
 
 	// event listeners for findDups
 	options = document.getElementsByName("findDups");
