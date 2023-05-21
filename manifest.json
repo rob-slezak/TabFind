@@ -7,7 +7,7 @@
     "default_title": "TabFind",
     "default_popup": "popup/tabfind.html"
   },
-  "description": "",
+  "description": "Manage your tabs. Easy to search, switch, delete, and find duplicates.",
   "homepage_url": "https://github.com/rob-slezak/TabFind",
   "icons": {
     "48": "icons/tabfind-48.png"
@@ -21,5 +21,5 @@
     "tabs",
 	"storage"
   ],
-  "version": "3.0"
+  "version": "3.1"
 }
