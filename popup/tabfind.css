@@ -34,34 +34,46 @@ body.extraWide {
 .tabs-header div {
 	padding: 5px 0;
 	display: block;
-	width: 100%;
 	text-align: center;
-	border: 1px solid darkblue;
 }
 
-#tabs-all, #tabs-duplicate {
+#tabs-all {
 	border-right: none;
 }
 
+#tabs-all, #tabs-duplicate {
+	width: 37.5%;
+	border: 1px solid darkblue;
+	cursor: pointer;
+}
+
 #tab-count {
+	width: 25%;
 	border: none;
 	white-space: nowrap; 
 	overflow: hidden;
 	text-overflow: clip;
 }
 
-#tabs-all:hover, #tabs-duplicate:hover, #tabs-search:hover {
+#tabs-all:hover, #tabs-duplicate:hover {
 	background-color: #ebf6f9;
 }
 
-#tabs-all.active, #tabs-duplicate.active, #tabs-search.active {
+#tabs-all.active, #tabs-duplicate.active {
 	background-color: inherit;
 	font-weight: bold;
+	cursor: default;
 }
 
 /* Tab List Section */
 #tabs-list-wrapper {
 	height: 530px;
+}
+
+#tabs-list-wrapper::before {
+	clear: both;
+	content: "";
+	display: table;
 }
 
 #tabs-list {
@@ -70,10 +82,6 @@ body.extraWide {
 	overflow-y: auto;
 	padding: 0;
 	margin: 0;
-}
-
-#tabs-list.no-search {
-	height: 530px;
 }
 
 #tabs-list.small {
@@ -210,4 +218,28 @@ body.extraWide #tabs-list li span {
 }
 #search-input:focus {
 	outline: none;	
+}
+
+/* Clear Duplicates Section */
+#clear-duplicates {
+	box-sizing: border-box;
+	width: calc(100% - 20px);
+	margin: 10px;
+	padding: 5px 10px;
+	border: 1px solid darkblue;
+	text-align: center;
+	line-height: 16px;
+	cursor: pointer;
+}
+
+#clear-duplicates:hover {
+	background-color: #ebf6f9;
+}
+
+#clear-duplicates.disabled {
+	cursor: not-allowed;
+}
+
+#clear-duplicates.disabled:hover {
+	background-color: transparent;
 }

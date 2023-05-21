@@ -1,6 +1,5 @@
 const TABS_ALL = 0;
 const TABS_DUPLICATE = 1;
-const TABS_SEARCH = 2;
 
 var currentState;
 var search = '';
@@ -41,14 +40,12 @@ async function closeTab(tabId) {
  */
 function reloadTabList(scrollToActiveTab = false) {
 	switch (currentState) {
-		case TABS_ALL:
-			listAllTabs(scrollToActiveTab);
-			break;
 		case TABS_DUPLICATE:
 			listDuplicateTabs(scrollToActiveTab);
 			break;
-		case TABS_SEARCH:
-			listSearchTabs(scrollToActiveTab);
+		case TABS_ALL:
+		default:
+			listAllTabs(scrollToActiveTab);
 			break;
 	}
 }
@@ -61,30 +58,24 @@ function makeTabActive(tab) {
 	
 	let tabAll = document.getElementById('tabs-all');
 	let tabDuplicate = document.getElementById('tabs-duplicate');
-	let tabSearch = document.getElementById('tabs-search');
 
 	let searchInput = document.getElementById('search-input');
-	let tabList = document.getElementById('tabs-list');
+	let clearDuplicates = document.getElementById('clear-duplicates');
 	
 	tabAll.classList.remove('active');
 	tabDuplicate.classList.remove('active');
-	tabSearch.classList.remove('active');
 	
 	switch (tab) {
-		case TABS_ALL:
-			tabAll.classList.add('active');
-			searchInput.classList.add('hidden');
-			tabList.classList.add('no-search');
-			break;
 		case TABS_DUPLICATE:
 			tabDuplicate.classList.add('active');
 			searchInput.classList.add('hidden');
-			tabList.classList.add('no-search');
+			clearDuplicates.classList.remove('hidden');
 			break;
-		case TABS_SEARCH:
-			tabSearch.classList.add('active');
+		case TABS_ALL:
+		default:
+			tabAll.classList.add('active');
+			clearDuplicates.classList.add('hidden');
 			searchInput.classList.remove('hidden');
-			tabList.classList.remove('no-search');
 			break;
 	}
 }
@@ -152,19 +143,40 @@ function buildListItemFromTab(tab) {
  */
 function ScrollToActiveTab(tabsList) {
 	let activeTab = tabsList.getElementsByClassName("active")[0];
-	activeTab.scrollIntoView();
+	if (activeTab) {
+		activeTab.scrollIntoView();
+	}
 }
 
 /**
  * lists all the tabs in the active window
  */
+function checkSearch(tab) {
+	let searchVal;
+	switch(searchBy) {
+		case "name":
+			searchVal = tab.title;
+			break;
+		case "url":
+			searchVal = tab.url;
+			break;
+		case "both":
+		default:
+			searchVal = `${tab.title}|${tab.url}`;
+			break;
+	}
+	
+	return search === '' || searchVal.toLowerCase().includes(search.toLowerCase());
+}
 function listAllTabs(scrollToActiveTab) {
 	getTabs().then((tabs) => {
 		let tabsList = document.getElementById('tabs-list');
 		tabsList.textContent = '';
 		
 		for (let tab of tabs) {
-			tabsList.appendChild(buildListItemFromTab(tab));
+			if (checkSearch(tab)) {
+				tabsList.appendChild(buildListItemFromTab(tab));
+			}
 		}
 		
 		if (scrollToActiveTab) {
@@ -208,8 +220,7 @@ function listDuplicateTabs(scrollToActiveTab) {
 		let tabsList = document.getElementById('tabs-list');
 		tabsList.textContent = '';
 		
-		let keys = Object.keys(duplicates);
-		for (let key of keys) {
+		for (let key in duplicates) {
 			let tabs = duplicates[key];
 			
 			if (tabs.length > 1) {
@@ -219,6 +230,14 @@ function listDuplicateTabs(scrollToActiveTab) {
 			}
 		}
 
+		let clearDuplicates = document.getElementById('clear-duplicates');
+		if (tabsList.childElementCount === 0) {
+			clearDuplicates.classList.add('disabled');
+		}
+		else {
+			clearDuplicates.classList.remove('disabled');
+		}
+
 		if (scrollToActiveTab) {
 			ScrollToActiveTab(tabsList);
 		}
@@ -226,53 +245,42 @@ function listDuplicateTabs(scrollToActiveTab) {
 }
 
 /**
- * lists the tabs in the active window with a search box
+ * Close duplicate tab(s)
  */
- function checkSearch(tab) {
-	let searchVal;
-	switch(searchBy) {
-		case "name":
-			searchVal = tab.title;
-			break;
-		case "url":
-			searchVal = tab.url;
-			break;
-		case "both":
-			searchVal = `${tab.title}|${tab.url}`;
-			break;
+async function closeDuplicateTabs() {
+	let tabs = await getTabs();
+	
+	let duplicates = {};
+	for (let tab of tabs) {
+		checkDup(duplicates, tab);
 	}
 	
-	return search === '' || searchVal.toLowerCase().includes(search.toLowerCase());
-}
-function listSearchTabs(scrollToActiveTab) {
-	getTabs().then((tabs) => {
-		let tabsList = document.getElementById('tabs-list');
-		tabsList.textContent = '';
+	for (let key in duplicates) {
+		let tabs = duplicates[key];
 		
-		for (let tab of tabs) {
-			if (checkSearch(tab)) {
-				tabsList.appendChild(buildListItemFromTab(tab));
+		if (tabs.length > 1) {
+			for (let [index, tab] of tabs.entries()) {
+				if (index < tabs.length - 1) {
+					await closeTab(tab.id);
+				}
 			}
 		}
-		
-		if (scrollToActiveTab) {
-			ScrollToActiveTab(tabsList);
-		}
-	});
+	}
 }
 
 function init () {
 	document.getElementById('search-input').addEventListener("input", (e) => {
 		search = e.target.value;
-		listSearchTabs();
+		listAllTabs();
 	});
 
 	let promiseTextSize = browser.storage.local.get("textSize");
 	let promiseFindDups = browser.storage.local.get("findDups");
 	let promiseSearchBy = browser.storage.local.get("searchBy");
 	let promisePopupWidth = browser.storage.local.get("popupWidth");
+	let promiseDefaultTab = browser.storage.local.get("defaultTab");
 
-	Promise.all([promiseTextSize, promiseFindDups, promiseSearchBy, promisePopupWidth]).then((values) => {
+	Promise.all([promiseTextSize, promiseFindDups, promiseSearchBy, promisePopupWidth, promiseDefaultTab]).then((values) => {
 		let textSize = values[0].textSize ?? "small";
 		document.getElementById('tabs-list').classList.add(textSize);
 
@@ -283,7 +291,8 @@ function init () {
 		let popupWidth = values[3].popupWidth ?? "normal";
 		document.body.classList.add(popupWidth);
 
-		makeTabActive(TABS_ALL);
+		let defaultTab = values[4].defaultTab ?? TABS_ALL;
+		makeTabActive(defaultTab);
 		updateTabCount();
 		reloadTabList(true);
 	});
@@ -294,15 +303,13 @@ document.addEventListener("click", async (e) => {
 	e.preventDefault();
 
 	if (e.target.id === "tabs-all" && currentState !== TABS_ALL) {
+		browser.storage.local.set({ 'defaultTab': TABS_ALL });
 		makeTabActive(TABS_ALL);
 		reloadTabList(true);
 	}
 	else if (e.target.id === "tabs-duplicate" && currentState !== TABS_DUPLICATE) {
+		browser.storage.local.set({ 'defaultTab': TABS_DUPLICATE });
 		makeTabActive(TABS_DUPLICATE);
-		reloadTabList(true);
-	}
-	else if (e.target.id === "tabs-search" && currentState !== TABS_SEARCH) {
-		makeTabActive(TABS_SEARCH);
 		reloadTabList(true);
 	}
 	
@@ -317,6 +324,11 @@ document.addEventListener("click", async (e) => {
 		var tabId = +e.target.getAttribute('href');
 		
 		await closeTab(tabId);
+		reloadTabList();
+	}
+
+	else if (e.target.id === "clear-duplicates" && !e.target.classList.contains('disabled')) {
+		await closeDuplicateTabs();
 		reloadTabList();
 	}
 });
