@@ -19,16 +19,15 @@ async function countDuplicateTabs(tabs) {
 		}	
 		
 		if (searchVal in duplicates) {
-			duplicates[searchVal] = 1;
+			duplicates[searchVal] = duplicates[searchVal] + 1;
 		}
 		else {
-			duplicates[searchVal] = duplicates[searchVal] + 1;
+			duplicates[searchVal] = 1;
 		}
 	}
 
 	let duplicateCount = 0;
-	let keys = Object.keys(duplicates);
-	for (let key of keys) {
+	for (let key in duplicates) {
 		let count = duplicates[key];
 		if (count > 1) {
 			duplicateCount += count;
