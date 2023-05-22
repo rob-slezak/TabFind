@@ -34,7 +34,7 @@ async function countDuplicateTabs(tabs) {
 		}
 	}
 
-	return duplicateCount.toString();
+	return duplicateCount > 0 ? duplicateCount.toString() : '';
 }
 
 async function updateBadgeColor(badgeColor) {
