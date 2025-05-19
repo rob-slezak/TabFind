@@ -36,6 +36,19 @@ async function closeTab(tabId) {
 }
 
 /**
+ * Close all tab(s) based on the search term
+ */
+async function closeAllTabs() {
+	var tabs = await getTabs();
+
+	for (let tab of tabs) {
+		if (checkSearch(tab)) {
+			await closeTab(tab.id);
+		}
+	}
+}
+
+/**
  * Reload tab list
  */
 function reloadTabList(scrollToActiveTab = false) {
@@ -59,7 +72,7 @@ function makeTabActive(tab) {
 	let tabAll = document.getElementById('tabs-all');
 	let tabDuplicate = document.getElementById('tabs-duplicate');
 
-	let searchInput = document.getElementById('search-input');
+	let searchWrapper = document.getElementById('search-wrapper');
 	let clearDuplicates = document.getElementById('clear-duplicates');
 	
 	tabAll.classList.remove('active');
@@ -68,14 +81,14 @@ function makeTabActive(tab) {
 	switch (tab) {
 		case TABS_DUPLICATE:
 			tabDuplicate.classList.add('active');
-			searchInput.classList.add('hidden');
+			searchWrapper.classList.add('hidden');
 			clearDuplicates.classList.remove('hidden');
 			break;
 		case TABS_ALL:
 		default:
 			tabAll.classList.add('active');
 			clearDuplicates.classList.add('hidden');
-			searchInput.classList.remove('hidden');
+			searchWrapper.classList.remove('hidden');
 			break;
 	}
 }
@@ -179,6 +192,14 @@ function listAllTabs(scrollToActiveTab) {
 			}
 		}
 		
+		let deleteAll = document.getElementById('delete-all-btn');
+		if (tabsList.childElementCount === 0) {
+			deleteAll.classList.add('disabled');
+		}
+		else {
+			deleteAll.classList.remove('disabled');
+		}
+
 		if (scrollToActiveTab) {
 			ScrollToActiveTab(tabsList);
 		}
@@ -330,5 +351,12 @@ document.addEventListener("click", async (e) => {
 	else if (e.target.id === "clear-duplicates" && !e.target.classList.contains('disabled')) {
 		await closeDuplicateTabs();
 		reloadTabList();
+	}
+
+	else if (e.target.id === "delete-all-btn" && !e.target.classList.contains('disabled')) {
+		if(confirm("This will close all visible tabs in the tab list.\nAre you sure?")) {
+			await closeAllTabs();
+			reloadTabList();
+		}
 	}
 });

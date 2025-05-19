@@ -209,15 +209,42 @@ body.extraWide #tabs-list li span {
 }
 
 /* Search Input Section */
-#search-input {
+#search-wrapper {
 	box-sizing: border-box;
-	width: calc(100% - 20px);
-	margin: 10px;
+	width: 100%;
+	padding: 10px;
+}
+#search-input {
+	display: inline-block;
+	box-sizing: border-box;
+	width: calc(100% - 80px);
 	padding: 5px 10px;
 	border: 1px solid darkblue;
 }
 #search-input:focus {
 	outline: none;	
+}
+
+/* Delete All Button */
+#delete-all-btn {
+	display: inline-block;
+	box-sizing: border-box;
+	width: 70px;
+	margin: 0 5px;
+	padding: 5px 10px;
+	border: 1px solid darkblue;
+	text-align: center;
+	line-height: 16px;
+	cursor: pointer;
+}
+#delete-all-btn:hover {
+	background-color: #ebf6f9;
+}
+#delete-all-btn.disabled {
+	cursor: not-allowed;
+}
+#delete-all-btn.disabled:hover {
+	background-color: transparent;
 }
 
 /* Clear Duplicates Section */
