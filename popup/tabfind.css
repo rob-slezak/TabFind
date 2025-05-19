@@ -41,14 +41,19 @@ body.extraWide {
 	border-right: none;
 }
 
-#tabs-all, #tabs-duplicate {
+#tabs-all, #tabs-duplicate, body.narrow #tab-count {
 	width: 37.5%;
+}
+body.narrow #tabs-all, #tab-count {
+	width: 25%;
+}
+
+#tabs-all, #tabs-duplicate {
 	border: 1px solid darkblue;
 	cursor: pointer;
 }
 
 #tab-count {
-	width: 25%;
 	border: none;
 	white-space: nowrap; 
 	overflow: hidden;
