@@ -275,3 +275,25 @@ body.extraWide #tabs-list li span {
 #clear-duplicates.disabled:hover {
 	background-color: transparent;
 }
+
+/* Dialog Section */
+#confirm-dialog {
+	font-size: 16px;
+}
+
+#confirm-btn, #cancel-btn {
+	display: inline-block;
+	box-sizing: border-box;
+	width: calc(50% - 24px);
+	margin: 10px 10px 0 10px;
+	padding: 5px 10px;
+	border: 1px solid darkblue;
+	text-align: center;
+	line-height: 16px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+#confirm-btn:hover, #cancel-btn:hover {
+	background-color: #ebf6f9;
+}

@@ -41,11 +41,14 @@ async function closeTab(tabId) {
 async function closeAllTabs() {
 	var tabs = await getTabs();
 
+	let tabIds = [];
 	for (let tab of tabs) {
 		if (checkSearch(tab)) {
-			await closeTab(tab.id);
+			tabIds.push(tab.id)
 		}
 	}
+
+	await closeTab(tabIds);
 }
 
 /**
@@ -276,17 +279,20 @@ async function closeDuplicateTabs() {
 		checkDup(duplicates, tab);
 	}
 	
+	let tabIds = [];
 	for (let key in duplicates) {
 		let tabs = duplicates[key];
 		
 		if (tabs.length > 1) {
 			for (let [index, tab] of tabs.entries()) {
 				if (index < tabs.length - 1) {
-					await closeTab(tab.id);
+					tabIds.push(tab.id);
 				}
 			}
 		}
 	}
+
+	await closeTab(tabIds);
 }
 
 function init () {
@@ -354,9 +360,18 @@ document.addEventListener("click", async (e) => {
 	}
 
 	else if (e.target.id === "delete-all-btn" && !e.target.classList.contains('disabled')) {
-		if(confirm("This will close all visible tabs in the tab list.\nAre you sure?")) {
-			await closeAllTabs();
-			reloadTabList();
-		}
+		const confirmDialog = document.getElementById("confirm-dialog");
+		confirmDialog.showModal();
+	}
+	else if (e.target.id === "confirm-btn") {
+		await closeAllTabs();
+		reloadTabList();
+		
+		const confirmDialog = document.getElementById("confirm-dialog");
+		confirmDialog.close();
+	}
+	else if (e.target.id === "cancel-btn") {
+		const confirmDialog = document.getElementById("confirm-dialog");
+		confirmDialog.close();
 	}
 });
