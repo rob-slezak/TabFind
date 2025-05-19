@@ -30,7 +30,7 @@ async function countDuplicateTabs(tabs) {
 	for (let key in duplicates) {
 		let count = duplicates[key];
 		if (count > 1) {
-			duplicateCount += count;
+			duplicateCount += (count - 1);
 		}
 	}
 
